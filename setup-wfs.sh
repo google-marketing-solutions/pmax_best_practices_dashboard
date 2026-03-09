@@ -29,4 +29,4 @@ else
 fi
 
 echo "initializing Google Ads data ETL Workflow..."
-npm init gaarf-wf@latest -- --answers=answers.json
+npx create-gaarf-wf@latest --answers=answers.json
