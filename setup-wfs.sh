@@ -28,5 +28,17 @@ else
     echo "skipping Retail setup..."
 fi
 
+echo "----"
+until [[ "$track_yn" == [YyNn] ]]; do
+    msg='We use anonymized and aggregated data to understand how pMaximizer is '
+    msg+='being used and make improvements. Would you allow us to track it? '
+    msg+='Please respond with 'y' for yes or 'n' for no: '
+    read -p "$msg" track_yn
+done
+
 echo "initializing Google Ads data ETL Workflow..."
 npx create-gaarf-wf@latest --answers=answers.json
+
+if [[ "$track_yn" == "y"  || "$track_yn" == "Y" ]]; then
+    ./installation_complete_tracking.sh
+fi
