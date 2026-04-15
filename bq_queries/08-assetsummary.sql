@@ -22,7 +22,7 @@ SELECT
   AGA.campaign_id,
   AGA.asset_id,
   AGA.asset_sub_type,
-  AGA.asset_performance,
+  AGA.asset_primary_status as asset_performance,
   AGA.text_asset_text,
   AGS.asset_group_status,
   COALESCE(AGA.image_url,CONCAT('https://www.youtube.com/watch?v=',AGA.video_id)) AS image_video,
@@ -42,7 +42,7 @@ LEFT JOIN (
   WHERE PARSE_DATE('%Y-%m-%d', date) >= DATE_SUB(CURRENT_DATE(),  INTERVAL 30 DAY)
   GROUP BY campaign_id
     ) AS CS ON AGA.campaign_id = CS.campaign_id
-WHERE AGA.asset_performance NOT IN ('PENDING','UNKNOWN')
+WHERE AGA.asset_primary_status NOT IN ('PENDING','UNKNOWN')
   AND AGA.campaign_id
     IN (SELECT campaign_id FROM `{bq_dataset}.campaign_settings`)
 GROUP BY 1,2,3,4,5,6,7,8,9,10,11,12,13,14,15);

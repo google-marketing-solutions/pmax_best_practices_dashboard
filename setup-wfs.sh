@@ -37,7 +37,7 @@ until [[ "$track_yn" == [YyNn] ]]; do
 done
 
 echo "initializing Google Ads data ETL Workflow..."
-npx create-gaarf-wf@latest --answers=answers.json
+npm init gaarf-wf@latest -- --answers=answers.json
 
 if [[ "$track_yn" == "y"  || "$track_yn" == "Y" ]]; then
     ./installation_complete_tracking.sh

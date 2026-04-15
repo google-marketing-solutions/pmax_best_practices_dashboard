@@ -20,7 +20,7 @@ CREATE OR REPLACE TABLE `{bq_dataset}_bq.assetgroup_performance` AS (
         asset_group_id,
         COUNT(*) AS sum_of_low_perf_assets
       FROM `{bq_dataset}_bq.summaryassets`
-      WHERE asset_performance = 'LOW'
+      WHERE asset_performance in ("LIMITED" , "NOT_ELIGIBLE")
       GROUP BY asset_group_id
     )
     SELECT

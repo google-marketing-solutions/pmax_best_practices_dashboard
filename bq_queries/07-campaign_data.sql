@@ -115,7 +115,16 @@ SELECT
   C.campaign_id,
   C.campaign_name,
   C.campaign_status,
-  C.url_expansion_opt_out,
+  COALESCE(
+    (
+      SELECT
+        LOGICAL_OR(JSON_VALUE(setting, '$.asset_automation_status') = 'OPTED_OUT')
+      FROM UNNEST(asset_automation_settings) AS setting
+      WHERE
+        JSON_VALUE(setting, '$.asset_automation_type')
+        = 'FINAL_URL_EXPANSION_TEXT_ASSET_AUTOMATION'
+    ),
+    FALSE) AS url_expansion_opt_out,
   C.bidding_strategy,
   C.budget_amount,
   C.total_budget,
