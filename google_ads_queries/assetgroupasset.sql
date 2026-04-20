@@ -13,6 +13,7 @@
 # limitations under the License.
 
 SELECT
+  segments.date AS date,
   asset_group.id AS asset_group_id,
   asset_group.name AS asset_group_name,
   asset_group.status AS asset_group_status,
@@ -23,17 +24,23 @@ SELECT
   customer.descriptive_name AS account_name,
   asset.type AS asset_type,
   asset_group_asset.field_type AS asset_sub_type,
-  asset_group_asset.performance_label as asset_performance,
   asset.image_asset.file_size AS image_file_size,
   asset.image_asset.full_size.url AS image_url,
   asset.text_asset.text AS text_asset_text,
   asset.image_asset.full_size.height_pixels AS image_height,
   asset.image_asset.full_size.width_pixels AS image_width,
   asset.youtube_video_asset.youtube_video_id AS video_id,
-  asset.youtube_video_asset.youtube_video_title AS video_title
+  asset.youtube_video_asset.youtube_video_title AS video_title,
+  metrics.cost_micros/1e6 AS cost,
+  metrics.impressions AS impressions,
+  metrics.clicks AS clicks,
+  metrics.conversions AS conversions,
+  metrics.conversions_value AS conversions_value
 FROM asset_group_asset
 WHERE campaign.advertising_channel_type = 'PERFORMANCE_MAX'
 AND campaign.status = 'ENABLED'
 AND asset_group.status = 'ENABLED'
 AND asset_group_asset.status = 'ENABLED'
 AND asset_group_asset.source = 'ADVERTISER'
+AND segments.date >= '{start_date}'
+AND segments.date <= '{end_date}'

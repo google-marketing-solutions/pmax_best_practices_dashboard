@@ -18,10 +18,9 @@ CREATE OR REPLACE TABLE `{bq_dataset}_bq.assetgroup_performance` AS (
     LOW_ASSETS AS (
       SELECT
         asset_group_id,
-        COUNT(*) AS sum_of_low_perf_assets
+        0 AS sum_of_low_perf_assets
       FROM `{bq_dataset}_bq.summaryassets`
-      WHERE asset_performance = 'LOW'
-      GROUP BY asset_group_id
+      GROUP BY 1,2
     )
     SELECT
       AGS.date,

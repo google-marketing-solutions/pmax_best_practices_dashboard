@@ -19,7 +19,7 @@ SELECT
     campaign.id AS campaign_id,
     campaign.name AS campaign_name,
     campaign.status AS campaign_status,
-    campaign.url_expansion_opt_out AS url_expansion_opt_out,
+    `some(campaign.asset_automation_settings, f(s) = equalText(s.asset_automation_type, 'FINAL_URL_EXPANSION_TEXT_ASSET_AUTOMATION') and equalText(s.asset_automation_status,'OPTED_OUT'))` as url_expansion_opt_out,
     campaign.bidding_strategy_type AS bidding_strategy,
     campaign_budget.amount_micros AS budget_amount,
     campaign_budget.total_amount_micros AS total_budget,
