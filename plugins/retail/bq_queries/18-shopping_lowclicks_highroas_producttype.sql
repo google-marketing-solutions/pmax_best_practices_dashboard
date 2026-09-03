@@ -15,8 +15,10 @@
 CREATE OR REPLACE TABLE `{bq_dataset}_bq.shopping_lowclicks_highroas_producttype` AS (
     WITH no_date_shopping_gads AS (
         SELECT
-            campaign_name,
+            account_id,
+            account_name,
             campaign_id,
+            campaign_name,
             CASE 
                 WHEN product_type_l1 IS NOT NULL AND product_type_l1 <> '' THEN
                     COALESCE(product_type_l1, '') || CASE WHEN product_type_l2 IS NOT NULL AND product_type_l2 <> '' THEN ' > ' ELSE '' END ||
@@ -34,7 +36,7 @@ CREATE OR REPLACE TABLE `{bq_dataset}_bq.shopping_lowclicks_highroas_producttype
             SUM(ctr) AS ctr
         FROM 
             `{bq_dataset}.shoppingperformance_view`
-        GROUP BY 1,2,3
+        GROUP BY 1,2,3,4,5
     ),
     AverageClicks AS (
         SELECT
@@ -43,6 +45,9 @@ CREATE OR REPLACE TABLE `{bq_dataset}_bq.shopping_lowclicks_highroas_producttype
             no_date_shopping_gads
     )
     SELECT
+        NDSG.account_id,
+        NDSG.account_name,
+        NDSG.campaign_id,
         NDSG.campaign_name,
         NDSG.product_type,
         CONCAT(NDSG.product_type, ' ||| ', NDSG.campaign_name) AS product_type_plus_campaign,
