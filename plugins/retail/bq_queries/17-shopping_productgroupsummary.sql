@@ -16,6 +16,10 @@ CREATE OR  REPLACE TABLE `{bq_dataset}_bq.shopping_productgroupsummary`
 AS (
     SELECT
       date,
+      account_id,
+      account_name,
+      campaign_id,
+      campaign_name,
       product_type,
       SUM(clicks) AS clicks,
       SUM(impressions) AS impressions,
@@ -25,5 +29,5 @@ AS (
       # roas = conversions_value/cost
     FROM 
       `{bq_dataset}_bq.shopping_campaignproducttype` 
-    GROUP BY 1, 2
+    GROUP BY 1, 2, 3, 4, 5, 6
 )
