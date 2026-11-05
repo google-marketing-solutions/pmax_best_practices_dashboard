@@ -20,3 +20,5 @@ FROM
     asset_group_signal 
 WHERE 
     asset_group_signal.audience.audience IS NOT NULL
+    AND asset_group.status = 'ENABLED'
+    AND campaign.status = 'ENABLED'
